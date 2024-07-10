@@ -1,0 +1,161 @@
+module SimpleversPetrinet;
+create OUT : PetriNet from IN : SimplePDL;
+
+--Obtenir le processus qui contient le process element
+helper context SimplePDL!ProcessElement
+def: getProcess(): SimplePDL! Process = 
+	SimplePDL!Process.allInstances()
+		->select(p | p.processelement -> includes(self))
+		->asSequence() -> first();
+
+--Taduire un process en un PetriNet de même nom
+rule Process2PetriNet {
+	from p: SimplePDL!Process
+	to pn: PetriNet!Petrinet (nom <- p.name)
+}
+
+--Traduire une WorkDefinition en un motif sur le réseau de petri
+rule WorkDefinition2PetriNet {
+	from wd : SimplePDL!WorkDefinition
+	to
+		--Place d'une WorlDefinition
+		p_pret: PetriNet!Place(
+			nom <- wd.name + '_pret',
+			nbjeton <- 1,
+			reseau <- wd.getProcess()),
+			
+		p_encours: PetriNet!Place(
+			nom <- wd.name + '_encours',
+			nbjeton <- 0,
+			reseau <- wd.getProcess()),
+			
+		p_finis : PetriNet!Place(
+			nom <- wd.name + '_finis',
+			nbjeton <- 0,
+			reseau <- wd.getProcess()),
+		
+		p_commence: PetriNet!Place(
+			nom <- wd.name + '_commence',
+			nbjeton <-0,
+			reseau <- wd.getProcess()),
+		
+		t_commencer: PetriNet!Transition(
+			nom <- wd.name + '_commencer',
+			reseau <- wd.getProcess()),
+		
+		t_finir: PetriNet!Transition(
+			nom <- wd.name + '_finir',
+			reseau <- wd.getProcess()),
+		
+		a_pret2commencer: PetriNet!Arc(
+			source <- p_pret,
+			cible <- t_commencer,
+			poids <- 1,
+			type <- #normal,
+			reseau <- wd.getProcess()),
+			
+		a_commencer2commence: PetriNet!Arc(
+			source <- t_commencer,
+			cible <- p_commence,
+			poids <- 1,
+			type <- #normal,
+			reseau <- wd.getProcess()),
+			
+		a_commencer2encours: PetriNet!Arc(
+			source <- t_commencer,
+			cible <- p_encours,
+			poids <- 1,
+			type <- #normal,
+			reseau <- wd.getProcess()),
+			
+		a_encours2finir: PetriNet!Arc(
+			source <- p_encours,
+			cible <- t_finir,
+			poids <- 1,
+			type <- #normal,
+			reseau <- wd.getProcess()),
+			
+		a_finir2finis: PetriNet!Arc(
+			source <- t_finir,
+			cible <- p_finis,
+			poids <- 1,
+			type <- #normal,
+			reseau <- wd.getProcess())
+}
+
+--Traduire un WorkSequence en un réseau de petri
+rule WorkSequence2PetriNet {
+	from WorkSequence : SimplePDL!WorkSequence
+	to
+		a_premiers2deuxieme : PetriNet!Arc(
+			source <- if(WorkSequence.linkType = #startToFinish or WorkSequence.linkType = #startToStart) then
+						thisModule.resolveTemp(WorkSequence.predecessor, 'p_commence')
+					else 
+						thisModule.resolveTemp(WorkSequence.predecessor, 'p_finis')
+					endif,
+			cible <- if (WorkSequence.linkType = #startToStart or WorkSequence.linkType = #finishToStart) then 
+						thisModule.resolveTemp(WorkSequence.successor, 't_commencer')
+					else
+						thisModule.resolveTemp(WorkSequence.successor, 't_finir')
+					endif,
+			poids <- 1,
+			type <- #read_arc,
+			reseau <- WorkSequence.successor.getProcess()
+			)
+}
+
+rule Ressource2PetriNet {
+	from Ressource : SimplePDL!Ressource
+	to
+		p_ressource : PetriNet!Place(
+			nom <- Ressource.name,
+			nbjeton <- Ressource.quantite,
+			reseau <- Ressource.getProcess())
+}
+
+rule Quantite2PetriNet{
+	from quantiteRessource : SimplePDL!QuantiteRessource
+	to
+		a_prendre_ressource : PetriNet!Arc(
+			source <- quantiteRessource.ressource,
+			cible <- thisModule.resolveTemp(quantiteRessource.workdefinition, 't_commencer'),
+			poids <- quantiteRessource.quantiteR,
+			type <- #normal,
+			reseau <- quantiteRessource.ressource.getProcess()),
+		
+			
+		a_rendre_ressource : PetriNet!Arc(
+			cible <- quantiteRessource.ressource,
+			source <- thisModule.resolveTemp(quantiteRessource.workdefinition,'t_finir'),
+			poids <- quantiteRessource.quantiteR,
+			type <- #normal,
+			reseau <- quantiteRessource.ressource.getProcess()
+			)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

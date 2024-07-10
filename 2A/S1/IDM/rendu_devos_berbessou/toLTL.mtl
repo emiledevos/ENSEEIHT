@@ -1,0 +1,50 @@
+[comment encoding = UTF-8 /]
+[module toLTL('http://simplepdl')]
+
+
+[template public processToLTL(aProcess : Process)]
+[comment @main/]
+
+[file (aProcess.name +'.ltl', false, 'UTF-8')]
+[let wd : OrderedSet(WorkDefinition) =aProcess.getWordefinition()] 
+
+op toutfinit = [for (workDef : WorkDefinition | wd)] [workDef.name/]_finis /\ [/for]1;
+op toutPret = [for (workDef: WorkDefinition | wd)] [workDef.name/]_pret /\ [/for]1;
+op toutEncours = [for (workDef : WorkDefinition | wd)] [workDef.name/]_encours /\ [/for]1;
+op toutCommencer = [for (workDef : WorkDefinition | wd)] [workDef.name/]_commencer /\ [/for]1;
+
+
+
+['['/][']'/] <> toutfinit;
+['['/][']'/]( toutfinit => dead); 
+['['/][']'/](toutfinit => ['['/][']'/] toutfinit); 
+
+[for (workDef : WorkDefinition | wd)] ['['/][']'/] ([workDef.name/]_finis + [workDef.name/]_encours + [workDef.name/]_pret =1);
+[/for]
+[/let]
+
+[let res : OrderedSet(Ressource) = aProcess.getR()] 
+[for (r : Ressource | res)] ['['/][']'/] (tousfinit => [r.name/] = [r.quantite/]);
+[/for]
+[/let]
+
+
+
+
+
+[/file]
+[/template]
+
+[query public getWordefinition(p: Process) : OrderedSet(WorkDefinition) =
+ 	p.processelement->select( e | e.oclIsTypeOf(WorkDefinition) )
+ 	->collect( e | e.oclAsType(WorkDefinition) )
+ 	->asOrderedSet()
+ /]
+
+
+[query public getR(p: Process) : OrderedSet(Ressource) =
+ 	p.processelement->select( e | e.oclIsTypeOf(Ressource) )
+ 	->collect( e | e.oclAsType(Ressource) )
+ 	->asOrderedSet()
+ /]
+

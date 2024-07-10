@@ -1,0 +1,26 @@
+import 'PetriNet.ecore'
+
+package PetriNet
+
+context Petrinet
+inv Valid_name : self.nom.matches('[a-zA-Z_][a-zA-Z0-9_]*')
+
+context Noeud
+inv NonNull_nom('The \'nom\' property of "' + self.toString() + '" is null'):
+	nom <> null
+	
+inv Valid_name : self.nom.matches('[a-zA-Z_][a-zA-Z0-9_]*')
+
+context Place
+inv validnbjeton : self.nbjeton > 0
+
+context Arc
+
+inv validpoids : self.poids > 0
+
+inv validarc :
+	(self.source.oclIsKindOf(Transition) and self.cible.oclIsKindOf(Place)) or (self.source.oclIsKindOf(Place) and self.cible.oclIsKindOf(Transition))
+
+
+
+endpackage

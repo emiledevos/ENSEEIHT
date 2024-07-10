@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simplepdl:Process
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:simplepdl="http://simplepdl"
+    xsi:schemaLocation="http://simplepdl SimplePDL.ecore"
+    name="devR">
+  <processelement
+      xsi:type="simplepdl:WorkDefinition"
+      linksToPredecessors="//@processelement.4"
+      name="vente"/>
+  <processelement
+      xsi:type="simplepdl:WorkDefinition"
+      linksToPredecessors="//@processelement.3"
+      linksToSuccessors="//@processelement.4"
+      name="tests"/>
+  <processelement
+      xsi:type="simplepdl:WorkDefinition"
+      linksToSuccessors="//@processelement.3"
+      name="programmation"/>
+  <processelement
+      xsi:type="simplepdl:WorkSequence"
+      predecessor="//@processelement.2"
+      successor="//@processelement.1">
+    <linkType>startToStart</linkType>
+  </processelement>
+  <processelement
+      xsi:type="simplepdl:WorkSequence"
+      predecessor="//@processelement.1"
+      successor="//@processelement.0">
+    <linkType>finishToStart</linkType>
+  </processelement>
+  <processelement
+      xsi:type="simplepdl:Ressource"
+      quantite="4"
+      name="Ordinateur"/>
+  <processelement
+      xsi:type="simplepdl:QuantiteRessource"
+      quantiteR="2"
+      ressource="//@processelement.5"
+      workdefinition="//@processelement.2"/>
+</simplepdl:Process>

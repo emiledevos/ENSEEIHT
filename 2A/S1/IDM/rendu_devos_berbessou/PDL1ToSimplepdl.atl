@@ -1,0 +1,51 @@
+-- @path XPDL=/fr.n7.pdl1/model/generated/PDL1.ecore
+-- @path SPDL=/miniprojet/SimplePDL.ecore
+
+module PDL1ToSimplepdl;
+create OUT : SPDL from IN : XPDL;
+
+-- Ce helper n'a pas de contexte. Il est défini au niveau du module.
+
+helper def: convertLinkType(x : XPDL!WorkSequenceType) : SPDL!WorkSequenceType =
+	
+if x = #start2start then #startToStart
+	else if x = #start2finish then #startToFinish
+	else if x = #finish2start then #finishToStart
+	else #finishToFinish
+endif endif endif; -- pas de SinonSi en ATL
+
+rule XProc2SProc {
+	from xp : XPDL!Process
+	to sp : SPDL!Process(
+	name <- xp.name,
+	-- Ajouter les enfants, sinon les autres éléments créés seront orphelins !
+	processelement <- xp.processElements)
+}
+
+rule XWD2SWD {
+	from xwd : XPDL!WorkDefinition
+	to swd : SPDL!WorkDefinition(
+	name <- xwd.name,
+	quantiteRessource <- xwd.quantiteressource)
+}
+rule XWS2SWS {
+	from xws : XPDL!WorkSequence
+	to sws : SPDL!WorkSequence(
+	linkType <- thisModule.convertLinkType(xws.linkType), -- Appel à notre helper
+	predecessor <- xws.predecessor, -- Conversion/appel de règle implicite
+	successor <- xws.successor)
+}
+
+rule XRes2SRes {
+	from xr : XPDL!Ressource
+	to sr : SPDL!Ressource(
+	quantite <- xr.quantite,
+	name <- xr.name)
+}
+
+rule XQRes2SQRes {
+	from xqr : XPDL!QuantiteRessource
+	to sqr : SPDL!QuantiteRessource(
+	quantiteR <- xqr.quantiteRessource,
+	ressource <- xqr.ressource)
+}

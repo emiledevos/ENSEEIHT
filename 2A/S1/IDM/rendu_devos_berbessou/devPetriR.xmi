@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<PetriNet:Petrinet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:PetriNet="http://PetriNet" nom="devR">
+  <petrinetelement xsi:type="PetriNet:Place" nom="vente_pret" outgoing="//@petrinetelement.6" nbjeton="1"/>
+  <petrinetelement xsi:type="PetriNet:Place" nom="vente_encours" outgoing="//@petrinetelement.9" ingoing="//@petrinetelement.8"/>
+  <petrinetelement xsi:type="PetriNet:Place" nom="vente_finis" ingoing="//@petrinetelement.10"/>
+  <petrinetelement xsi:type="PetriNet:Place" nom="vente_commence" ingoing="//@petrinetelement.7"/>
+  <petrinetelement xsi:type="PetriNet:Transition" nom="vente_commencer" outgoing="//@petrinetelement.7 //@petrinetelement.8" ingoing="//@petrinetelement.6"/>
+  <petrinetelement xsi:type="PetriNet:Transition" nom="vente_finir" outgoing="//@petrinetelement.10" ingoing="//@petrinetelement.9 //@petrinetelement.34"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="1" source="//@petrinetelement.0" cible="//@petrinetelement.4"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="1" source="//@petrinetelement.4" cible="//@petrinetelement.3"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="1" source="//@petrinetelement.4" cible="//@petrinetelement.1"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="1" source="//@petrinetelement.1" cible="//@petrinetelement.5"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="1" source="//@petrinetelement.5" cible="//@petrinetelement.2"/>
+  <petrinetelement xsi:type="PetriNet:Place" nom="tests_pret" outgoing="//@petrinetelement.17" nbjeton="1"/>
+  <petrinetelement xsi:type="PetriNet:Place" nom="tests_encours" outgoing="//@petrinetelement.20" ingoing="//@petrinetelement.19"/>
+  <petrinetelement xsi:type="PetriNet:Place" nom="tests_finis" outgoing="//@petrinetelement.34" ingoing="//@petrinetelement.21"/>
+  <petrinetelement xsi:type="PetriNet:Place" nom="tests_commence" ingoing="//@petrinetelement.18"/>
+  <petrinetelement xsi:type="PetriNet:Transition" nom="tests_commencer" outgoing="//@petrinetelement.18 //@petrinetelement.19" ingoing="//@petrinetelement.17"/>
+  <petrinetelement xsi:type="PetriNet:Transition" nom="tests_finir" outgoing="//@petrinetelement.21" ingoing="//@petrinetelement.20 //@petrinetelement.33"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="1" source="//@petrinetelement.11" cible="//@petrinetelement.15"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="1" source="//@petrinetelement.15" cible="//@petrinetelement.14"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="1" source="//@petrinetelement.15" cible="//@petrinetelement.12"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="1" source="//@petrinetelement.12" cible="//@petrinetelement.16"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="1" source="//@petrinetelement.16" cible="//@petrinetelement.13"/>
+  <petrinetelement xsi:type="PetriNet:Place" nom="programmation_pret" outgoing="//@petrinetelement.28" nbjeton="1"/>
+  <petrinetelement xsi:type="PetriNet:Place" nom="programmation_encours" outgoing="//@petrinetelement.31" ingoing="//@petrinetelement.30"/>
+  <petrinetelement xsi:type="PetriNet:Place" nom="programmation_finis" outgoing="//@petrinetelement.33" ingoing="//@petrinetelement.32"/>
+  <petrinetelement xsi:type="PetriNet:Place" nom="programmation_commence" ingoing="//@petrinetelement.29"/>
+  <petrinetelement xsi:type="PetriNet:Transition" nom="programmation_commencer" outgoing="//@petrinetelement.29 //@petrinetelement.30" ingoing="//@petrinetelement.28 //@petrinetelement.36"/>
+  <petrinetelement xsi:type="PetriNet:Transition" nom="programmation_finir" outgoing="//@petrinetelement.32 //@petrinetelement.37" ingoing="//@petrinetelement.31"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="1" source="//@petrinetelement.22" cible="//@petrinetelement.26"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="1" source="//@petrinetelement.26" cible="//@petrinetelement.25"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="1" source="//@petrinetelement.26" cible="//@petrinetelement.23"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="1" source="//@petrinetelement.23" cible="//@petrinetelement.27"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="1" source="//@petrinetelement.27" cible="//@petrinetelement.24"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="1" source="//@petrinetelement.24" cible="//@petrinetelement.16" type="read_arc"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="1" source="//@petrinetelement.13" cible="//@petrinetelement.5" type="read_arc"/>
+  <petrinetelement xsi:type="PetriNet:Place" nom="Ordinateur" outgoing="//@petrinetelement.36" ingoing="//@petrinetelement.37" nbjeton="4"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="2" source="//@petrinetelement.35" cible="//@petrinetelement.26"/>
+  <petrinetelement xsi:type="PetriNet:Arc" poids="2" source="//@petrinetelement.27" cible="//@petrinetelement.35"/>
+</PetriNet:Petrinet>

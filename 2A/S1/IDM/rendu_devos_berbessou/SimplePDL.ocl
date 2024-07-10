@@ -1,0 +1,33 @@
+import 'SimplePDL.ecore'
+
+package simplepdl
+
+context Process
+inv NonNull_name('The \'name\' property of "' + self.toString() + '" is null'):
+	name <> null
+
+context WorkDefinition
+
+inv Valid_name : self.name.matches('[a-zA-Z_][a-zA-Z0-9_]*')
+
+inv Nom_Diff : 
+	self.process().processelement
+		->select(pe | pe.oclIsKindOf(WorkDefinition))
+		->collect(pe | pe.oclAsType(WorkDefinition))
+		-> forAll(wd | (self = wd) or (self.name <> wd.name))
+
+context WorkSequence
+inv NonReflex : self.predecessor <> self.successor 
+
+context ProcessElement
+def: process(): Process = 
+	Process.allInstances()
+		->select(p | p.processelement -> includes(self))
+		->asSequence() -> first()
+		
+		
+context QuantiteRessource
+inv ressourcesSimultanee : self.quantiteR <= self.ressource.quantite
+
+	
+endpackage
