@@ -1,0 +1,7 @@
+main{
+  int x = 3;
+    goto etiquette; 
+    print(3);
+    etiquette:
+    print(8);
+  }

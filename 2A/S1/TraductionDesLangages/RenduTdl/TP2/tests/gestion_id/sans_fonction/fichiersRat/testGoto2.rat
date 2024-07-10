@@ -1,0 +1,8 @@
+test{
+  int x = 3;
+    
+    print(3);
+    etiquette:
+    print(8);
+    goto etiquette; 
+  }

@@ -1,0 +1,11 @@
+int add2 (int a, int b ){
+  etiquette:
+  goto etiquette;
+  return (a+b);
+ }
+
+test{
+  goto etiquette;
+  etiquette :
+  print add2(4,6);
+}

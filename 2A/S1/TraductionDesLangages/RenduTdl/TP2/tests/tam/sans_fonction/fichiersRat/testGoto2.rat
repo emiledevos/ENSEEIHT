@@ -1,0 +1,16 @@
+main {
+const a = 4;
+if (a < 5) {
+    goto etiq_then;
+} 
+else {
+    goto etiq_else ;
+}
+etiq_then :
+print true ;
+goto fin;
+etiq_else :
+print false ;
+goto fin ;
+fin :
+}

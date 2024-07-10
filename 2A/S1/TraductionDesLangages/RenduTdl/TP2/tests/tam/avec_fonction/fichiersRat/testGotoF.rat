@@ -1,0 +1,13 @@
+int f (int a){
+  goto eti;
+  print 8;
+  eti:
+  return a;
+}
+
+test{
+  goto eti  ;
+  print f(3);
+  eti :
+  print f(5);
+}

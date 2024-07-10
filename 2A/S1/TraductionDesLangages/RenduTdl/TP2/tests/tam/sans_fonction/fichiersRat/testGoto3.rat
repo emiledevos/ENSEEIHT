@@ -1,0 +1,11 @@
+main{
+  int x = 3;
+  if (x=3){
+    goto etiqu; 
+  }
+  else{
+    print(false);
+    }
+  etiqu:
+  print(x + 5);
+  }
