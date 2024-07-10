@@ -1,0 +1,23 @@
+(* BE : Session 1 2022 *)
+(* Implémentation de la fonction somme de deux entiers *)
+
+module Somme
+
+  use int.Int
+  use ref.Refint
+
+  let somme (m n : int) : int
+    requires { m >= 0 && n >=0 }
+    ensures  { m + n = result}
+  =
+    let r = ref n in
+    let i = ref m in
+    while  (!i > 0) do
+      invariant { !r + !i = m + n && !i>=0}
+      variant   { !i}
+      r :=  (!r) + 1;
+      i := (!i) - 1
+    done;
+    !r
+
+end
